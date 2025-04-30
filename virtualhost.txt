@@ -1,0 +1,78 @@
+<VirtualHost *:80>
+    ServerName cursosmega.com.br
+    ServerAlias www.cursosmega.com.br
+    Redirect permanent / https://cursosmega.com.br/
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName cursosmega.com.br
+    ServerAlias www.cursosmega.com.br
+    ServerAdmin ti@cursosmega.com.br
+
+    DocumentRoot /home/megacursos/public_html/megacursos
+
+    <Directory /home/megacursos/public_html/megacursos>
+        Require all granted
+    </Directory>
+
+    # Diretórios estáticos e de mídia
+    Alias /static /home/megacursos/public_html/megacursos/staticfiles
+    <Directory /home/megacursos/public_html/megacursos/staticfiles>
+        Require all granted
+    </Directory>
+
+    Alias /img /home/megacursos/public_html/megacursos/core/static/assets/img
+    <Directory /home/megacursos/public_html/megacursos/core/static/assets/img>
+        Require all granted
+    </Directory>
+
+    <Directory /home/megacursos/public_html/megacursos>
+        <Files wsgi.py>
+            Require all granted
+        </Files>
+    </Directory>
+
+    WSGIDaemonProcess megacursos python-path=/home/megacursos/public_html/megacursos:/home/megacursos/public_html/megacursos/venv/lib/python3.12/site-packages
+    WSGIProcessGroup megacursos
+    WSGIScriptAlias / /home/megacursos/public_html/megacursos/megacursos/wsgi.py
+
+    SSLEngine on
+    SSLCertificateFile /etc/letsencrypt/live/cursosmega.com.br/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/cursosmega.com.br/privkey.pem
+    SSLCertificateChainFile /etc/letsencrypt/live/cursosmega.com.br/chain.pem
+
+    ErrorLog ${APACHE_LOG_DIR}/megacursos_error.log
+    CustomLog ${APACHE_LOG_DIR}/megacursos_access.log combined
+</VirtualHost>
+
+
+
+VirtualHost do ava:
+
+<VirtualHost *:80>
+    ServerName ava.cursosmega.com.br
+    ServerAlias www.ava.cursosmega.com.br
+    Redirect permanent / https://ava.cursosmega.com.br/
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName ava.cursosmega.com.br
+    ServerAlias www.ava.cursosmega.com.br
+    ServerAdmin webmaster@ava.cursosmega.com.br
+
+    DocumentRoot /var/www/html/megacursos
+
+    <Directory /var/www/html/megacursos>
+        Options +FollowSymlinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    SSLEngine on
+    SSLCertificateFile /etc/letsencrypt/live/ava.cursosmega.com.br/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/ava.cursosmega.com.br/privkey.pem
+    SSLCertificateChainFile /etc/letsencrypt/live/ava.cursosmega.com.br/chain.pem
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
